@@ -21,7 +21,9 @@ module Middleman
     # @param [String] filename The file to check.
     # @return [Boolean]
     def self.binary?(filename)
-      s = (File.read(filename, File.stat(filename).blksize) || "").split(//)
+      f = File.open(filename, "rb")
+      data = f.readpartial File.stat(filename).blksize
+      s = data.split(//)
       ((s.size - s.grep(" ".."~").size) / s.size.to_f) > 0.30
     end
 
